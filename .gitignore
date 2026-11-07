@@ -1,0 +1,11 @@
+build/
+bin/
+lib/
+out/
+.vs/
+*.user
+*.suo
+*.VC.db
+imgui.ini
+*.log
+logs/
