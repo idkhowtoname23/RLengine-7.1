@@ -1,0 +1,28 @@
+name: RLengine 7.1 CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    name: Build & Smoke Test (MSVC C++23)
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B build -A x64
+
+      - name: Compile Release Configuration
+        run: cmake --build build --config Release
+
+      - name: Run DirectX 12 Smoke Test
+        run: .\build\bin\Release\RLengine7.1.exe --smoke-test
+
+      - name: Run DirectX 11 Fallback Smoke Test
+        run: .\build\bin\Release\RLengine7.1.exe --smoke-test --dx11
