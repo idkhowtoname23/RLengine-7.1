@@ -177,13 +177,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
         Entity cube = scene.CreateEntity("DX11_Cube");
         scene.AddComponent<MeshComponent>(cube, "Cube");
-        auto& tr = scene.GetComponent<TransformComponent>(cube);
-        tr.Position = { 0.0f, 0.0f, 0.0f };
+        scene.GetComponent<TransformComponent>(cube).Position = { 0.0f, 0.0f, 0.0f };
 
         Entity child = scene.CreateEntity("DX11_ChildCube");
         scene.AddComponent<MeshComponent>(child, "ChildCube");
-        auto& childTr = scene.GetComponent<TransformComponent>(child);
-        childTr.Position = { 1.5f, 0.5f, 0.0f };
+        scene.GetComponent<TransformComponent>(child).Position = { 1.5f, 0.5f, 0.0f };
         scene.SetParent(child, cube);
 
         Timer timer;
@@ -197,8 +195,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             timer.Tick();
             const f32 dt = timer.GetDeltaTime();
 
-            tr.Rotation.y += dt * 0.75f;
-            childTr.Rotation.x += dt * 1.5f;
+            if (auto* pTr = scene.TryGetComponent<TransformComponent>(cube))
+            {
+                pTr->Rotation.y += dt * 0.75f;
+            }
+            if (auto* pChildTr = scene.TryGetComponent<TransformComponent>(child))
+            {
+                pChildTr->Rotation.x += dt * 1.5f;
+            }
 
             if (Input::IsKeyDown(KeyCode::W)) scene.GetCamera().Move(0.0f, 0.0f, 5.0f * dt);
             if (Input::IsKeyDown(KeyCode::S)) scene.GetCamera().Move(0.0f, 0.0f, -5.0f * dt);
@@ -213,7 +217,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             dx11.ClearRenderTarget(0.04f, 0.06f, 0.09f, 1.0f);
             dx11.RenderScene(scene);
             dx11.EndFrame();
-            dx11.Present(true);
+            dx11.Present(!smokeTest);
 
             if (smokeTest && timer.GetFrameCount() >= maxTestFrames)
             {

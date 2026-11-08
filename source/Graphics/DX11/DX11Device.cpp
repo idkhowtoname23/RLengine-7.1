@@ -611,7 +611,7 @@ namespace RL
 
     void DX11Device::RenderScene(Scene& scene)
     {
-        if (!m_context || !m_vs || !m_ps || !m_cubeVertexBuffer) return;
+        if (!m_context || !m_vs || !m_ps || !m_cubeVertexBuffer || !m_constantBuffer) return;
 
         DirectX::XMMATRIX viewProj = scene.GetCamera().GetViewProjectionMatrix();
 

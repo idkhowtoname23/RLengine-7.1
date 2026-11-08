@@ -15,6 +15,14 @@ namespace RL
 
     LONG WINAPI CrashHandler::UnhandledExceptionHandler(EXCEPTION_POINTERS* pExceptionPointers)
     {
+        DWORD exceptionCode = 0;
+        void* exceptionAddress = nullptr;
+        if (pExceptionPointers && pExceptionPointers->ExceptionRecord)
+        {
+            exceptionCode = pExceptionPointers->ExceptionRecord->ExceptionCode;
+            exceptionAddress = pExceptionPointers->ExceptionRecord->ExceptionAddress;
+        }
+
         std::error_code ec;
         std::filesystem::create_directories("logs", ec);
 
@@ -57,7 +65,7 @@ namespace RL
             CloseHandle(hFile);
         }
 
-        RL_LOG_FATAL("A fatal crash occurred! MiniDump saved to {}", dumpPath);
+        RL_LOG_FATAL("A fatal crash occurred! Code: 0x{:08X}, Address: 0x{:p}, MiniDump saved to {}", exceptionCode, exceptionAddress, dumpPath);
         Logger::Flush();
 
         return EXCEPTION_EXECUTE_HANDLER;

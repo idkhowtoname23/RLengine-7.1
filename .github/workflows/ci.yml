@@ -26,3 +26,11 @@ jobs:
 
       - name: Run DirectX 11 Fallback Smoke Test
         run: .\build\bin\Release\RLengine7.1.exe --smoke-test --dx11
+
+      - name: Upload Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-logs
+          path: logs/
+          if-no-files-found: ignore
