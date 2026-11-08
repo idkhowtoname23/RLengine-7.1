@@ -34,5 +34,5 @@ This document provides a transparent overview of deliberate architectural bounda
 
 ### 5. Architectural Stubs
 * **Status**: `EventBus`, `AssetManager`, `MemoryStats`, and `ServiceLocator` are integrated into the core architecture.
-* **Current Boundary**: In 7.1, core window/render events are dispatched directly; `MemoryStats` panel displays engine baseline metrics.
+* **Current Boundary**: In 7.1, core window/render events are dispatched directly; `MemoryStats` panel telemetry not wired yet (reports 0.00 MB).
 * **Planned for 7.2**: Full integration of per-allocation telemetry and unified event piping across all subsystems.
