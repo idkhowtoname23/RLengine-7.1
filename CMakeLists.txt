@@ -98,6 +98,7 @@ set(PLATFORM_SOURCES
     source/Platform/CrashHandler.cpp
     source/Platform/FileSystem/FileWatcher.hpp
     source/Platform/FileSystem/VFS.hpp
+    source/Platform/RLengine.rc
 )
 
 set(ASSETS_SOURCES

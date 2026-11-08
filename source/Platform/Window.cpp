@@ -72,12 +72,29 @@ namespace RL
         m_width = desc.width;
         m_height = desc.height;
 
+        HICON hIcon = LoadIconW(m_hinstance, MAKEINTRESOURCEW(101));
+        if (!hIcon)
+        {
+            hIcon = static_cast<HICON>(LoadImageW(nullptr, L"assets/icons/rlengine.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE));
+        }
+        if (!hIcon)
+        {
+            hIcon = LoadIconW(nullptr, IDI_APPLICATION);
+        }
+
+        HICON hIconSm = static_cast<HICON>(LoadImageW(m_hinstance, MAKEINTRESOURCEW(101), IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0));
+        if (!hIconSm)
+        {
+            hIconSm = static_cast<HICON>(LoadImageW(nullptr, L"assets/icons/rlengine.ico", IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_LOADFROMFILE));
+        }
+
         WNDCLASSEXW wc{};
         wc.cbSize        = sizeof(WNDCLASSEXW);
         wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
         wc.lpfnWndProc   = Window::StaticWndProc;
         wc.hInstance     = m_hinstance;
-        wc.hIcon         = LoadIconW(nullptr, IDI_APPLICATION);
+        wc.hIcon         = hIcon;
+        wc.hIconSm       = hIconSm ? hIconSm : hIcon;
         wc.hCursor       = LoadCursorW(nullptr, IDC_ARROW);
         wc.hbrBackground = nullptr;
         wc.lpszClassName = m_className.c_str();
@@ -129,6 +146,15 @@ namespace RL
         if (!m_hwnd)
         {
             return std::unexpected(std::format("Failed to create Win32 window. Error: {}", GetLastError()));
+        }
+
+        if (hIcon)
+        {
+            SendMessageW(m_hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
+        }
+        if (hIconSm)
+        {
+            SendMessageW(m_hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIconSm));
         }
 
         ShowWindow(m_hwnd, SW_SHOW);

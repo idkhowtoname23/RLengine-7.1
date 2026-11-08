@@ -1,6 +1,11 @@
+<p align="center">
+  <img src="assets/branding/rlengine_banner.png" alt="RLengine Banner" width="100%">
+</p>
+
 # RLengine 7.1
 
 [![CI](https://github.com/idkhowtoname23/RLengine-7.1/actions/workflows/ci.yml/badge.svg)](https://github.com/idkhowtoname23/RLengine-7.1/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **RLengine 7.1** is a high-performance, real-time 3D game engine and editor engineered in modern **C++23** with dual **DirectX 12** and **DirectX 11** rendering backends, a generational sparse-set ECS, a deterministic physics engine, 3D spatial audio, and an editor inspired by Blender 4.x.
 
